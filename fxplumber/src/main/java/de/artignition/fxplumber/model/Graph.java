@@ -105,7 +105,7 @@ public class Graph {
 				
 					connRqLine = viewFactory.getConnectionFactory().getConnectionRequestNode(e.getConnector());
 					connRqLine.setStart(new Point2D(sp.getX(), sp.getY()));
-					connRqLine.setEnd(new Point2D(sp.getX()-2, sp.getY()+2));
+					connRqLine.setEnd(new Point2D(sp.getX()-4, sp.getY()-4));
 					canvas.getChildren().add(connRqLine);
 				} else {
 					// otherwise we create a new connection between connRqSource and the current connector
@@ -164,7 +164,7 @@ public class Graph {
 		this.canvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent arg0) {
 				if (connRqLine != null) {
-					connRqLine.setEnd(new Point2D(arg0.getSceneX()-2, arg0.getSceneY() + 2));
+					connRqLine.setEnd(new Point2D(arg0.getSceneX()-4, arg0.getSceneY()-4));
 				}
 			}
 		});
