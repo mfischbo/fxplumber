@@ -27,6 +27,7 @@ import de.artignition.fxplumber.view.StartAndEndAwareShape;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
@@ -71,6 +72,7 @@ public class GraphNode {
 			public void handle(MouseEvent arg0) {
 				mouseX = arg0.getSceneX();
 				mouseY = arg0.getSceneY();
+				nodePane.setCursor(Cursor.HAND);
 				canvas.fireEvent(new NodeEvent(NodeEvent.NODE_SELECTED, that));
 			}
 		});
@@ -98,6 +100,13 @@ public class GraphNode {
 				}
 			}
 		});
+		
+		this.nodePane.setOnMouseReleased(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				nodePane.setCursor(Cursor.DEFAULT);
+			}
+		});
 	}
 	
 
@@ -112,7 +121,6 @@ public class GraphNode {
 		this.ports.add(c);
 		for (Connector con : ports) {
 			Point2D pos = this.factory.adjustConnector(this.nodePane, this, con);
-			System.out.println("Setting connector : " + con + " to position : " + pos);
 			con.adjustPosition(pos);
 		}
 		return c;
