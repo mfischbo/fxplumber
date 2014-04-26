@@ -41,7 +41,7 @@ public class DefaultConnectorFactory implements ConnectorFactory {
 	public Node newConnector(ConnectorType type) {
 	
 		Circle c = new Circle();
-		c.setRadius(12.5d);
+		c.setRadius(8.d);
 		c.setFill(Color.RED);
 		c.setStroke(Color.BLACK);
 		return c;

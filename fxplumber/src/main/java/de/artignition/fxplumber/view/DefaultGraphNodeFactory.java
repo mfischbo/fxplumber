@@ -61,14 +61,14 @@ public class DefaultGraphNodeFactory implements GraphNodeFactory {
 		}
 		
 		if (c.getType() == ConnectorType.INPUT) {
-			double x = -12.5d;
-			double y = (nodePane.getPrefHeight() / (ins.size() + 1)) * (ins.indexOf(c)+1) - 12.5d;
+			double x = -8.d;
+			double y = (nodePane.getPrefHeight() / (ins.size() + 1)) * (ins.indexOf(c)+1) - 8.d;
 			return new Point2D(x,y);
 		} else {
-			double x = nodePane.getPrefWidth() - 12.5d;
+			double x = nodePane.getPrefWidth() - 8.d;
 			double f = (nodePane.getPrefHeight() / (outs.size() + 1));
-			double y = f * (outs.indexOf(c) + 1) - 12.5d;
-			return new Point2D(x,y);
+			double y = f * (outs.indexOf(c) + 1);
+			return new Point2D(x, y - 8.d);
 		}
 	}
 }

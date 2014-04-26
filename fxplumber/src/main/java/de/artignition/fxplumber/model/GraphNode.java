@@ -88,10 +88,10 @@ public class GraphNode {
 					if (c.isConnected()) {
 						StartAndEndAwareShape s = c.getConnection().getConnectionNode();
 						
-						if (c.getConnection().getSource().getNode() == that) {
+						if (c.getConnection().getSource().getGraphNode() == that) {
 							s.setStart(that.getPointByConnector(c));
 						
-						} else if (c.getConnection().getTarget().getNode() == that) {
+						} else if (c.getConnection().getTarget().getGraphNode() == that) {
 							s.setEnd(that.getPointByConnector(c));
 						}
 					}
@@ -112,10 +112,12 @@ public class GraphNode {
 		this.ports.add(c);
 		for (Connector con : ports) {
 			Point2D pos = this.factory.adjustConnector(this.nodePane, this, con);
-			c.adjustPosition(pos);
+			System.out.println("Setting connector : " + con + " to position : " + pos);
+			con.adjustPosition(pos);
 		}
 		return c;
 	}
+	
 
 	/**
 	 * Returns an unmodifiable set of the attached connectors.

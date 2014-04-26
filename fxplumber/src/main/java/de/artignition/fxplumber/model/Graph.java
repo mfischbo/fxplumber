@@ -100,7 +100,7 @@ public class Graph {
 					log.debug("Requesting connection from source connector: " + e.getConnector());
 					connRqSource = e.getConnector();
 					
-					GraphNode sn = e.getConnector().getNode();
+					GraphNode sn = e.getConnector().getGraphNode();
 					Point2D  sp = sn.getPointByConnector(e.getConnector());
 				
 					connRqLine = viewFactory.getConnectionFactory().getConnectionRequestNode(e.getConnector());

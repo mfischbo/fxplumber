@@ -38,28 +38,24 @@ public class DefaultConnectionFactory implements ConnectionFactory {
 
 	@Override
 	public void onConnectionSelected(StartAndEndAwareShape current) {
-		System.out.println("Connection selected");
 		((StrokeLine) current).setStroke(Color.BLUE);
 	}
 
 
 	@Override
 	public void onConnectionUnselected(StartAndEndAwareShape current) {
-		System.out.println("Connection unselected");
 		((StrokeLine) current).setStroke(Color.BLACK);
 	}
 
 
 	@Override
 	public void onConnectionHovered(StartAndEndAwareShape current) {
-		System.out.println("Connection hovered");
 		((StrokeLine) current).setStroke(Color.CHOCOLATE);
 	}
 
 
 	@Override
 	public void onConnectionUnhovered(StartAndEndAwareShape current) {
-		System.out.println("Connection unhovered");
 		((StrokeLine) current).setStroke(Color.BLACK);
 	}
 }

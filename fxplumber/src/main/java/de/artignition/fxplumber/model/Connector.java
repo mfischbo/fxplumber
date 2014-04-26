@@ -168,9 +168,10 @@ public class Connector {
 	 * Returns the {@link GraphNode} that is parent of this connector
 	 * @return The GraphNode
 	 */
-	public GraphNode getNode() {
+	public GraphNode getGraphNode() {
 		return this.graphNode;
 	}
+
 
 	/**
 	 * Returns the type of this connector.

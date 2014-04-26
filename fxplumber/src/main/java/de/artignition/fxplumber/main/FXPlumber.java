@@ -62,6 +62,7 @@ public class FXPlumber extends Application {
 		n2.addConnector(ConnectorType.INPUT, cFact);
 		n2.addConnector(ConnectorType.OUTPUT, cFact);
 		n2.addConnector(ConnectorType.OUTPUT, cFact);
+		n2.addConnector(ConnectorType.OUTPUT, cFact);
 		
 		GraphNode n3 = g.createNode(500, 400);
 		n3.addConnector(ConnectorType.INPUT, cFact);

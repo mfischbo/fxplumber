@@ -18,14 +18,15 @@ public class StrokeLine extends StartAndEndAwareShape {
 		this.line = new Line();
 		this.c = c;
 
+	
 		this.line.setStartX(0);
 		this.line.setStartY(7.5);
 		this.line.setEndY(7.5);
 		this.setPrefHeight(15.d);
 		this.getChildren().add(line);
 		
-		Point2D initStart = c.getSource().getNode().getPointByConnector(c.getSource());
-		Point2D initEnd   = c.getTarget().getNode().getPointByConnector(c.getTarget());
+		Point2D initStart = c.getSource().getGraphNode().getPointByConnector(c.getSource());
+		Point2D initEnd   = c.getTarget().getGraphNode().getPointByConnector(c.getTarget());
 		
 		setStart(initStart);
 		setEnd(initEnd);
@@ -48,7 +49,7 @@ public class StrokeLine extends StartAndEndAwareShape {
 	@Override
 	public void setStart(Point2D start) {
 
-		Point2D endpoint = c.getTarget().getNode().getPointByConnector(c.getTarget());
+		Point2D endpoint = c.getTarget().getGraphNode().getPointByConnector(c.getTarget());
 		double rot = Math.toDegrees(Math.atan2(endpoint.getY() - start.getY(), endpoint.getX() - start.getX()));
 		if (rot < 0)
 			rot += 360;
@@ -63,6 +64,7 @@ public class StrokeLine extends StartAndEndAwareShape {
 		
 		this.getTransforms().add(new Rotate(rot, 0, 7.5));
 		this.line.setEndX(bw);
+
 	}
 
 	
@@ -70,7 +72,7 @@ public class StrokeLine extends StartAndEndAwareShape {
 	@Override
 	public void setEnd(Point2D end) {
 
-		Point2D startpoint = c.getSource().getNode().getPointByConnector(c.getSource());
+		Point2D startpoint = c.getSource().getGraphNode().getPointByConnector(c.getSource());
 		
 		double rot = Math.toDegrees(Math.atan2(end.getY() - startpoint.getY(), end.getX() - startpoint.getX()));
 		if (rot < 0)
@@ -85,5 +87,6 @@ public class StrokeLine extends StartAndEndAwareShape {
 	
 		this.getTransforms().add(new Rotate(rot, 0, 7.5));
 		this.line.setEndX(bw);
+
 	}
 }
