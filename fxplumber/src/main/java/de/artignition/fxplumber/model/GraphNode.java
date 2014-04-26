@@ -46,6 +46,8 @@ public class GraphNode {
 	/* The factory that is used to produce the graphical representation of the node */
 	private GraphNodeFactory 	factory;
 	
+	private double				mouseX;
+	private double				mouseY;
 	
 	/**
 	 * Creates a new instance on the given position on the provided canvas using the factory to create the graphical representation
@@ -58,17 +60,17 @@ public class GraphNode {
 		this.nodePane = factory.createGraphNode();
 		this.nodePane.relocate(pos.getX(), pos.getY());
 		this.factory = factory;
+		this.ports = new LinkedHashSet<Connector>();
 		
 		canvas.getChildren().add(this.nodePane);
 		
-		this.ports = new LinkedHashSet<Connector>();
-		
-	
 		final GraphNode that = this;
 		
 		// fire node selected event 
 		this.nodePane.setOnMousePressed(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent arg0) {
+				mouseX = arg0.getSceneX();
+				mouseY = arg0.getSceneY();
 				canvas.fireEvent(new NodeEvent(NodeEvent.NODE_SELECTED, that));
 			}
 		});
@@ -76,13 +78,14 @@ public class GraphNode {
 		// handle mouse drag on node
 		this.nodePane.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent e) {
-				double x = e.getSceneX();// + e.getX();
-				double y = e.getSceneY();// + e.getY();
-				nodePane.relocate(x, y);
+				double x = e.getSceneX() - mouseX;// e.getX();
+				double y = e.getSceneY() - mouseY;// e.getY();
+				nodePane.relocate(nodePane.getLayoutX() + x, nodePane.getLayoutY() + y);
+				mouseX = e.getSceneX();
+				mouseY = e.getSceneY();
 		
 				for (Connector c : ports) {
 					if (c.isConnected()) {
-						
 						StartAndEndAwareShape s = c.getConnection().getConnectionNode();
 						
 						if (c.getConnection().getSource().getNode() == that) {

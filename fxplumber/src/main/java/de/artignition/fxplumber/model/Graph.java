@@ -249,15 +249,6 @@ public class Graph {
 	
 	private Connection createConnection(Connector source, Connector target) {
 		Connection c = new Connection(source, target, this.viewFactory.getConnectionFactory());
-		StartAndEndAwareShape s = c.getConnectionNode();
-
-		/*
-		GraphNode sn = source.getNode();
-		GraphNode en = target.getNode();
-	
-		s.setStart(sn.getPointByConnector(source));
-		s.setEnd(en.getPointByConnector(target));
-		*/
 		this.canvas.getChildren().add(c.getConnectionNode());
 		canvas.fireEvent(new ConnectionEvent(ConnectionEvent.CONNECTION_CREATED, c));
 		return c;
