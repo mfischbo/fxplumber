@@ -15,6 +15,7 @@
 
 package de.artignition.fxplumber.view;
 
+import de.artignition.fxplumber.model.Connection;
 import de.artignition.fxplumber.model.Connector;
 
 /**
@@ -35,5 +36,14 @@ public interface ConnectionFactory {
 	 * @param target The target 
 	 * @return 
 	 */
-	public StartAndEndAwareShape getConnectionNode(Connector source, Connector target);
+	public StartAndEndAwareShape getConnectionNode(Connection c);
+	
+	
+	public void onConnectionSelected(StartAndEndAwareShape current);
+	
+	public void onConnectionUnselected(StartAndEndAwareShape current);
+	
+	public void onConnectionHovered(StartAndEndAwareShape current);
+	
+	public void onConnectionUnhovered(StartAndEndAwareShape current);
 }

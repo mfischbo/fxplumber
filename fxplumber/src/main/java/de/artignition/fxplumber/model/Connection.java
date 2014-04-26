@@ -15,8 +15,13 @@
 
 package de.artignition.fxplumber.model;
 
+import de.artignition.fxplumber.event.ConnectionEvent;
 import de.artignition.fxplumber.view.ConnectionFactory;
 import de.artignition.fxplumber.view.StartAndEndAwareShape;
+
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 /**
  * Represents a connection between two {@link Connector}'s.
@@ -31,6 +36,7 @@ public class Connection {
 	private Connector 				source;
 	private Connector				target;
 	private StartAndEndAwareShape 	node;
+	private ConnectionFactory		factory;
 
 	/**
 	 * Creates a connection between the provided {@link Connector}'s. 
@@ -41,12 +47,55 @@ public class Connection {
 	Connection(Connector source, Connector target, ConnectionFactory fact) {
 		this.source = source;
 		this.target = target;
-		this.node = fact.getConnectionNode(source, target);
+		this.node = fact.getConnectionNode(this);
+		this.factory = fact;
 		
 		source.setConnection(this);
 		target.setConnection(this);
 		source.onConnectionAccepted();
 		target.onConnectionAccepted();
+		
+		final Connection that = this;
+		
+		this.node.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			
+			@Override
+			public void handle(MouseEvent e) {
+				if (e.getButton() == MouseButton.PRIMARY) {
+					onConnectionSelected();
+					node.fireEvent(new ConnectionEvent(ConnectionEvent.CONNECTION_SELECTED, that));
+				}
+				
+				if (e.getButton() == MouseButton.SECONDARY) {
+					onConnectionUnselected();
+					node.fireEvent(new ConnectionEvent(ConnectionEvent.CONNECTION_UNSELECTED, that));
+				}
+			}
+		});
+		
+		this.node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				factory.onConnectionHovered(node);
+				node.fireEvent(new ConnectionEvent(ConnectionEvent.CONNECTION_HOVERED, that));
+			}
+		});
+		
+		this.node.setOnMouseExited(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent arg0) {
+				factory.onConnectionUnhovered(node);
+				node.fireEvent(new ConnectionEvent(ConnectionEvent.CONNECTION_UNHOVERED, that));
+			}
+		});
+	}
+
+	void onConnectionSelected() {
+		this.factory.onConnectionSelected(this.node);
+	}
+
+	void onConnectionUnselected() {
+		this.factory.onConnectionUnselected(this.node);
 	}
 	
 

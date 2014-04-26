@@ -27,6 +27,10 @@ public class ConnectionEvent extends Event {
 	public static EventType<ConnectionEvent> CONNECTION_CREATED = new EventType<ConnectionEvent>(ANY, "CONNECTION_CREATED");
 	public static EventType<ConnectionEvent> CONNECTION_REMOVED = new EventType<ConnectionEvent>(ANY, "CONNECTION_REMOVED");
 	public static EventType<ConnectionEvent> CONNECTION_DENIED  = new EventType<ConnectionEvent>(ANY, "CONNECTION_DENIED");
+	public static EventType<ConnectionEvent> CONNECTION_SELECTED = new EventType<ConnectionEvent>(ANY, "CONNECTION_SELECTED");
+	public static EventType<ConnectionEvent> CONNECTION_UNSELECTED = new EventType<ConnectionEvent>(ANY, "CONNECTION_UNSELECTED");
+	public static EventType<ConnectionEvent> CONNECTION_HOVERED = new EventType<ConnectionEvent>(ANY, "CONNECTION_HOVERED");
+	public static EventType<ConnectionEvent> CONNECTION_UNHOVERED = new EventType<ConnectionEvent>(ANY, "CONNECTION_UNHOVERED");
 
 	private Connection conn;
 	
