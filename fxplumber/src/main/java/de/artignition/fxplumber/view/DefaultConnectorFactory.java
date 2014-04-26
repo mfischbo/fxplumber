@@ -23,11 +23,15 @@ import javafx.scene.shape.Circle;
 
 /**
  * This class implements some defaults for a connector.
- * A connector is painted as a circle and adjusted to either side of the parent GraphNode
+ * This implementation provides a simple red circle as connector. The circle will change it's color based on the
+ * current state of the application. For instance upon a connection requests that is accepted it will change it's
+ * color to lightgreen.
+ * 
  * @author M. Fischboeck
  *
  */
 public class DefaultConnectorFactory implements ConnectorFactory {
+
 
 	/*
 	 * (non-Javadoc)
@@ -43,6 +47,10 @@ public class DefaultConnectorFactory implements ConnectorFactory {
 		return c;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see de.artignition.fxplumber.view.ConnectorFactory#onConnectionAccepted(javafx.scene.Node)
+	 */
 	@Override
 	public Node onConnectionAccepted(Node current) {
 	
@@ -51,6 +59,10 @@ public class DefaultConnectorFactory implements ConnectorFactory {
 		return c;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see de.artignition.fxplumber.view.ConnectorFactory#onConnectionRequested(javafx.scene.Node, boolean, boolean)
+	 */
 	@Override
 	public Node onConnectionRequested(Node current, boolean acceptorAccepts, boolean isSource) {
 		if (acceptorAccepts) {
@@ -64,12 +76,14 @@ public class DefaultConnectorFactory implements ConnectorFactory {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see de.artignition.fxplumber.view.ConnectorFactory#onConnectionRequestCancelled(javafx.scene.Node)
+	 */
 	@Override
 	public Node onConnectionRequestCancelled(Node current) {
 		Circle c = (Circle) current;
 		c.setFill(Color.RED);
 		return c;
 	}
-	
-	
 }

@@ -24,6 +24,7 @@ import de.artignition.fxplumber.event.ConnectorEvent;
 import de.artignition.fxplumber.event.NodeEvent;
 import de.artignition.fxplumber.util.ConnectionAcceptor;
 import de.artignition.fxplumber.util.DefaultConnectionAcceptor;
+import de.artignition.fxplumber.view.StartAndEndAwareShape;
 import de.artignition.fxplumber.view.ViewFactory;
 
 import javafx.event.EventHandler;
@@ -31,7 +32,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Line;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +57,7 @@ public class Graph {
 	protected Connector			connRqSource = null;
 	
 	/* Holds the line when a new connection is about to be craeted */
-	protected Line				connRqLine   = null;
+	protected StartAndEndAwareShape connRqLine   = null;
 	
 	protected Logger			log = LoggerFactory.getLogger(getClass());
 
@@ -102,14 +102,10 @@ public class Graph {
 					
 					GraphNode sn = e.getConnector().getNode();
 					Point2D  sp = sn.getPointByConnector(e.getConnector());
-					
-					connRqLine  = new Line();
-					connRqLine.setStartX(sp.getX());
-					connRqLine.setStartY(sp.getY());
-					connRqLine.setEndX(sp.getX());
-					connRqLine.setEndY(sp.getY()+2);
-					connRqLine.setStrokeDashOffset(4.0d);
-					connRqLine.getStrokeDashArray().addAll(2d);
+				
+					connRqLine = viewFactory.getConnectionFactory().getConnectionRequestNode(e.getConnector());
+					connRqLine.setStart(new Point2D(sp.getX(), sp.getY()));
+					connRqLine.setEnd(new Point2D(sp.getX()-2, sp.getY()+2));
 					canvas.getChildren().add(connRqLine);
 				} else {
 					// otherwise we create a new connection between connRqSource and the current connector
@@ -168,8 +164,7 @@ public class Graph {
 		this.canvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent arg0) {
 				if (connRqLine != null) {
-					connRqLine.setEndX(arg0.getSceneX());
-					connRqLine.setEndY(arg0.getSceneY() + 2);
+					connRqLine.setEnd(new Point2D(arg0.getSceneX()-2, arg0.getSceneY() + 2));
 				}
 			}
 		});
@@ -211,7 +206,7 @@ public class Graph {
 	 * @return The created {@link GraphNode}
 	 */
 	public GraphNode createNode(double x, double y) {
-		final GraphNode n = new GraphNode(x, y, canvas, this.viewFactory.getNodeFactory());
+		final GraphNode n = new GraphNode(new Point2D(x, y), canvas, this.viewFactory.getNodeFactory());
 		this.nodes.add(n);
 		canvas.fireEvent(new NodeEvent(NodeEvent.NODE_CREATED, n));
 		return n;
@@ -254,6 +249,14 @@ public class Graph {
 	
 	private Connection createConnection(Connector source, Connector target) {
 		Connection c = new Connection(source, target, this.viewFactory.getConnectionFactory());
+		StartAndEndAwareShape s = c.getConnectionNode();
+		
+		GraphNode sn = source.getNode();
+		GraphNode en = target.getNode();
+	
+		s.setStart(sn.getPointByConnector(source));
+		s.setEnd(en.getPointByConnector(target));
+		
 		this.canvas.getChildren().add(c.getConnectionNode());
 		canvas.fireEvent(new ConnectionEvent(ConnectionEvent.CONNECTION_CREATED, c));
 		return c;

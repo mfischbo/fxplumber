@@ -17,7 +17,7 @@ package de.artignition.fxplumber.view;
 
 public class ViewFactory {
 
-	private GraphNodePaneFactory nodeFactory = new DefaultNodeFactory();
+	private GraphNodeFactory nodeFactory = new DefaultGraphNodeFactory();
 	private ConnectorFactory connectorFactory = new DefaultConnectorFactory();
 	private ConnectionFactory connectionFactory = new DefaultConnectionFactory();
 	
@@ -25,11 +25,11 @@ public class ViewFactory {
 		
 	}
 
-	public GraphNodePaneFactory getNodeFactory() {
+	public GraphNodeFactory getNodeFactory() {
 		return nodeFactory;
 	}
 
-	public void setNodeFactory(GraphNodePaneFactory nodeFactory) {
+	public void setNodeFactory(GraphNodeFactory nodeFactory) {
 		this.nodeFactory = nodeFactory;
 	}
 

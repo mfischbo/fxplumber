@@ -19,10 +19,28 @@ import de.artignition.fxplumber.model.Connector.ConnectorType;
 
 import javafx.scene.Node;
 
+/**
+ * Defines a set of methods that are called in order to define the graphical representation of the Connector in different states of the application.
+ * @author M. Fischboeck
+ *
+ */
 public interface ConnectorFactory {
 
+	/**
+	 * Called when a new connector is requested.
+	 * Implementation should return 
+	 * @param type The type of the connector
+	 * @return The {@link javafx.scene.Node} that is the graphical representation of the connector
+	 */
 	public Node newConnector(ConnectorType type);
 	
+	/**
+	 * 
+	 * @param current
+	 * @param acceptorAccepts
+	 * @param isSource
+	 * @return
+	 */
 	public Node onConnectionRequested(Node current, boolean acceptorAccepts, boolean isSource);
 	
 	public Node onConnectionRequestCancelled(Node current);

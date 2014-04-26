@@ -21,7 +21,7 @@ import de.artignition.fxplumber.model.GraphNode;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Pane;
 
-public interface GraphNodePaneFactory {
+public interface GraphNodeFactory {
 
 	public Pane createGraphNode(); 
 	

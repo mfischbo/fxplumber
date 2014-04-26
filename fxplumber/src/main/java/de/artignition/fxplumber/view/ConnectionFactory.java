@@ -17,9 +17,23 @@ package de.artignition.fxplumber.view;
 
 import de.artignition.fxplumber.model.Connector;
 
-import javafx.scene.Node;
-
+/**
+ * Defines a set of methods that are called in order to define the graphical representation of the connection in different states of the application.
+ * 
+ * @author M. Fischboeck
+ *
+ */
 public interface ConnectionFactory {
 
-	public Node getConnectionNode(Connector source, Connector target);
+	
+	public StartAndEndAwareShape getConnectionRequestNode(Connector source);
+	
+	
+	/**
+	 * Returns the {@link javafx.scene.Node} that represents the connection
+	 * @param source The source {@link de.artignition.fxplumber.model.Connector} of this new connection.
+	 * @param target The target 
+	 * @return 
+	 */
+	public StartAndEndAwareShape getConnectionNode(Connector source, Connector target);
 }

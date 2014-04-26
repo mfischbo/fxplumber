@@ -22,25 +22,41 @@ import java.util.Set;
 import de.artignition.fxplumber.event.NodeEvent;
 import de.artignition.fxplumber.model.Connector.ConnectorType;
 import de.artignition.fxplumber.view.ConnectorFactory;
-import de.artignition.fxplumber.view.GraphNodePaneFactory;
+import de.artignition.fxplumber.view.GraphNodeFactory;
+import de.artignition.fxplumber.view.StartAndEndAwareShape;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Line;
 
-
+/**
+ * Represents a node within the {@link Graph}.
+ * @author M. Fischboeck 
+ *
+ */
 public class GraphNode {
 
+	/* The connector ports the graph node contains */
 	private Set<Connector> 		ports;
-	private Pane				nodePane;
-	private GraphNodePaneFactory factory;
 	
-	GraphNode(double x, double y, final Pane canvas, GraphNodePaneFactory factory) {
+	/* The pane we are drawing on */
+	private Pane				nodePane;
+
+	/* The factory that is used to produce the graphical representation of the node */
+	private GraphNodeFactory 	factory;
+	
+	
+	/**
+	 * Creates a new instance on the given position on the provided canvas using the factory to create the graphical representation
+	 * @param pos The coordinates where to create the node.
+	 * @param canvas The canvas that holds the actual graph
+	 * @param factory The factory that is used to create the graphical representation of the node
+	 */
+	GraphNode(Point2D pos, final Pane canvas, GraphNodeFactory factory) {
 
 		this.nodePane = factory.createGraphNode();
-		this.nodePane.relocate(x, y);
+		this.nodePane.relocate(pos.getX(), pos.getY());
 		this.factory = factory;
 		
 		canvas.getChildren().add(this.nodePane);
@@ -66,16 +82,14 @@ public class GraphNode {
 		
 				for (Connector c : ports) {
 					if (c.isConnected()) {
-						Line l = (Line) c.getConnection().getConnectionNode();
+						
+						StartAndEndAwareShape s = c.getConnection().getConnectionNode();
+						
 						if (c.getConnection().getSource().getNode() == that) {
-					
-							l.setStartX(that.getPointByConnector(c).getX());
-							l.setStartY(that.getPointByConnector(c).getY());
+							s.setStart(that.getPointByConnector(c));
 						
 						} else if (c.getConnection().getTarget().getNode() == that) {
-					
-							l.setEndX(that.getPointByConnector(c).getX());
-							l.setEndY(that.getPointByConnector(c).getY());
+							s.setEnd(that.getPointByConnector(c));
 						}
 					}
 				}
@@ -123,11 +137,14 @@ public class GraphNode {
 	}
 
 	
+	/**
+	 * Destroys the GraphNode.
+	 * When the node is destroyed, all related connectors and connections will be also destroyed
+	 */
 	void dispose() {
 		// search each connector for connections
 		for (Connector c : ports) {
-			if (c.isConnected())
-				c.setConnection(null);
+			c.dispose();
 		}
 		this.ports = null;
 	}

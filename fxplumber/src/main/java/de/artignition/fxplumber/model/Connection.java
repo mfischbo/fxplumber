@@ -16,15 +16,28 @@
 package de.artignition.fxplumber.model;
 
 import de.artignition.fxplumber.view.ConnectionFactory;
+import de.artignition.fxplumber.view.StartAndEndAwareShape;
 
-import javafx.scene.Node;
-
+/**
+ * Represents a connection between two {@link Connector}'s.
+ * The graphical representation of the connection depends on the {@link de.artignition.fxplumber.view.ConnectionFactory} that
+ * has been set by the user. It is important to know, that the produces graphical representation will be 
+ * added directly to the root of the graph and thus, overlapping all other graphics like {@link GraphNode} or {@link Connector}.
+ * 
+ * @author M. Fischboeck 
+ */
 public class Connection {
 
-	private Connector 			source;
-	private Connector			target;
-	private Node				node;
-	
+	private Connector 				source;
+	private Connector				target;
+	private StartAndEndAwareShape 	node;
+
+	/**
+	 * Creates a connection between the provided {@link Connector}'s. 
+	 * @param source The source connector of the connection
+	 * @param target The target connector of the connection
+	 * @param fact The factory used to produce the graphical view of the connection
+	 */
 	Connection(Connector source, Connector target, ConnectionFactory fact) {
 		this.source = source;
 		this.target = target;
@@ -36,15 +49,36 @@ public class Connection {
 		target.onConnectionAccepted();
 	}
 	
+
+	/**
+	 * Destroys this connection by setting the connectors to null
+	 */
+	void dispose() {
+		this.source = null;
+		this.target = null;
+	}
+	
+	/**
+	 * Returns the source {@link Connector} of the connection
+	 * @return The source connector
+	 */
 	public Connector getSource() {
 		return this.source;
 	}
 
+	/**
+	 * Returns the target {@link Connector} of the connection.
+	 * @return The target connector
+	 */
 	public Connector getTarget() {
 		return this.target;
 	}
 
-	Node getConnectionNode() {
+	/**
+	 * Returns the graphical representation of the connection
+	 * @return The node the connection is drawn on
+	 */
+	StartAndEndAwareShape getConnectionNode() {
 		return this.node;
 	}
 }

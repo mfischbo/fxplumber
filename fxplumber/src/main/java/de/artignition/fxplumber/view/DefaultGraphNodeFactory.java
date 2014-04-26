@@ -27,7 +27,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class DefaultNodeFactory implements GraphNodePaneFactory {
+public class DefaultGraphNodeFactory implements GraphNodeFactory {
 
 	@Override
 	public Pane createGraphNode() {
@@ -68,7 +68,6 @@ public class DefaultNodeFactory implements GraphNodePaneFactory {
 			double x = nodePane.getPrefWidth() - 12.5d;
 			double f = (nodePane.getPrefHeight() / (outs.size() + 1));
 			double y = f * (outs.indexOf(c) + 1) - 12.5d;
-			System.out.println(y);
 			return new Point2D(x,y);
 		}
 	}

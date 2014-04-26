@@ -16,11 +16,22 @@
 package de.artignition.fxplumber.util;
 
 import de.artignition.fxplumber.model.Connector;
+import de.artignition.fxplumber.model.Connector.ConnectorType;
 
 public class DefaultConnectionAcceptor implements ConnectionAcceptor {
 
 	@Override
 	public boolean accepts(Connector source, Connector target) {
+	
+		if (source.isConnected() || target.isConnected())
+			return false;
+		
+		if (source.getType() == target.getType())
+			return false;
+		
+		if (source.getType() == ConnectorType.INPUT || target.getType() == ConnectorType.OUTPUT)
+			return false;
+		
 		return true;
 	}
 

@@ -15,28 +15,20 @@
 
 package de.artignition.fxplumber.view;
 
-import de.artignition.fxplumber.model.GraphNode;
+import de.artignition.fxplumber.connection.DashedLine;
+import de.artignition.fxplumber.connection.StrokeLine;
 import de.artignition.fxplumber.model.Connector;
-
-import javafx.geometry.Point2D;
-import javafx.scene.Node;
-import javafx.scene.shape.Line;
 
 public class DefaultConnectionFactory implements ConnectionFactory {
 
-	public Node getConnectionNode(Connector source, Connector target) {
-		GraphNode sourceNode = ((GraphNode) source.getNode());
-		GraphNode targetNode = ((GraphNode) target.getNode());
-		
-		Point2D s = sourceNode.getPointByConnector(source);
-		Point2D e = targetNode.getPointByConnector(target);
-		
-		Line l = new Line();
-		l.setStartX(s.getX());
-		l.setStartY(s.getY());
-		l.setEndX(e.getX());
-		l.setEndY(e.getY());
-		return l;
+	@Override
+	public StartAndEndAwareShape getConnectionRequestNode(Connector source) {
+		return new DashedLine();
 	}
 
+	
+	@Override
+	public StartAndEndAwareShape getConnectionNode(Connector source, Connector target) {
+		return new StrokeLine();
+	}
 }
