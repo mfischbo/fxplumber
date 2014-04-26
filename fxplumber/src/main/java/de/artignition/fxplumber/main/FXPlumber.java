@@ -29,6 +29,11 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+/**
+ * Test environment 
+ * @author M.Fischboeck 
+ *
+ */
 public class FXPlumber extends Application {
 
 	public static void main(String[] args) {
