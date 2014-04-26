@@ -130,8 +130,7 @@ public class Connector {
 	 * Delegates the call to the underlying factory
 	 */
 	void onConnectionRequestCancelled() {
-		if (this.connection == null)
-			node = factory.onConnectionRequestCancelled(this.node);
+		node = factory.onConnectionRequestCancelled(this, this.node);
 	}
 
 	/**

@@ -15,6 +15,7 @@
 
 package de.artignition.fxplumber.view;
 
+import de.artignition.fxplumber.model.Connector;
 import de.artignition.fxplumber.model.Connector.ConnectorType;
 
 import javafx.scene.Node;
@@ -81,9 +82,12 @@ public class DefaultConnectorFactory implements ConnectorFactory {
 	 * @see de.artignition.fxplumber.view.ConnectorFactory#onConnectionRequestCancelled(javafx.scene.Node)
 	 */
 	@Override
-	public Node onConnectionRequestCancelled(Node current) {
+	public Node onConnectionRequestCancelled(Connector connector, Node current) {
 		Circle c = (Circle) current;
-		c.setFill(Color.RED);
+		if (connector.isConnected()) 
+			c.setFill(Color.GREEN);
+		else
+			c.setFill(Color.RED);
 		return c;
 	}
 }

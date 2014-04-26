@@ -15,6 +15,7 @@
 
 package de.artignition.fxplumber.view;
 
+import de.artignition.fxplumber.model.Connector;
 import de.artignition.fxplumber.model.Connector.ConnectorType;
 
 import javafx.scene.Node;
@@ -43,7 +44,7 @@ public interface ConnectorFactory {
 	 */
 	public Node onConnectionRequested(Node current, boolean acceptorAccepts, boolean isSource);
 	
-	public Node onConnectionRequestCancelled(Node current);
+	public Node onConnectionRequestCancelled(Connector connector, Node current);
 	
 	public Node onConnectionAccepted(Node current);
 }

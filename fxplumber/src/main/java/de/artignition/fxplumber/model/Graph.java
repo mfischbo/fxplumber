@@ -111,10 +111,14 @@ public class Graph {
 					// otherwise we create a new connection between connRqSource and the current connector
 					log.debug("Targeting connection on connector : " + e.getConnector());
 					
-					if (acceptor != null && acceptor.accepts(connRqSource, e.getConnector())) { 
-						createConnection(connRqSource, e.getConnector());
-						canvas.fireEvent(new ConnectionEvent(ConnectionEvent.CONNECTION_DENIED, null));
-						
+					if (acceptor != null) {
+						if (acceptor.accepts(connRqSource, e.getConnector()))
+							createConnection(connRqSource, e.getConnector());
+						else {
+							connRqSource.onConnectionRequestCancelled();
+							e.getConnector().onConnectionRequestCancelled();
+							canvas.fireEvent(new ConnectionEvent(ConnectionEvent.CONNECTION_DENIED, null));
+						}
 					} else if (acceptor == null) 
 						createConnection(connRqSource, e.getConnector());
 					
@@ -142,8 +146,11 @@ public class Graph {
 		this.canvas.addEventHandler(ConnectorEvent.CONNECTOR_UNHOVERED, new EventHandler<ConnectorEvent>() {
 			@Override
 			public void handle(ConnectorEvent arg0) {
-				if (connRqSource != null)
+				if (connRqSource != null) {
+					System.out.println("Calling connection cancelled on source : " + connRqSource);
 					connRqSource.onConnectionRequestCancelled();
+				}
+				System.out.println("Calling conn cancelled on target : " + arg0.getConnector());
 				arg0.getConnector().onConnectionRequestCancelled();
 			}
 		});
@@ -243,6 +250,7 @@ public class Graph {
 	 * @param conn The connection to be removed.
 	 */
 	public void disconnect(Connection conn) {
+		conn.dispose();
 		canvas.fireEvent(new ConnectionEvent(ConnectionEvent.CONNECTION_REMOVED, conn));
 	}
 	
