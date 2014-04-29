@@ -111,13 +111,29 @@ public class GraphNode {
 	
 
 	/**
+	 * Adds a new {@link Connector} to the node using the default factory for connectors.
+	 * @param type The type of the connector
+	 * @return The connector
+	 */
+	public Connector addConnector(ConnectorType type) {
+		Connector c = new Connector(this, type);
+		this.ports.add(c);
+		for (Connector con : ports) {
+			Point2D pos = this.factory.adjustConnector(this.nodePane, this, con);
+			con.adjustPosition(pos);
+		}
+		return c;
+	}
+
+	
+	/**
 	 * Adds a new {@link Connector} to this node.
 	 * @param type The type of the connector
 	 * @param factory The factory that provides the actual graphical representation of the connector
 	 * @return The created connector
 	 */
 	public Connector addConnector(ConnectorType type, ConnectorFactory factory) {
-		Connector c = new Connector(this, this.nodePane, type, factory);
+		Connector c = new Connector(this, type, factory);
 		this.ports.add(c);
 		for (Connector con : ports) {
 			Point2D pos = this.factory.adjustConnector(this.nodePane, this, con);
@@ -148,7 +164,22 @@ public class GraphNode {
 		}
 		return Collections.unmodifiableSet(retval);
 	}
+	
+	/**
+	 * Returns the x coordinate of the top left corner of the nodes bounding box
+	 * @return The x coordinate
+	 */
+	public double getX() {
+		return nodePane.getLayoutX();
+	}
 
+	/**
+	 * Returns the y coordinate of the top left corner of the nodes bounding box
+	 * @return The y coordinate
+	 */
+	public double getY() {
+		return nodePane.getLayoutY();
+	}
 	
 	/**
 	 * Destroys the GraphNode.
@@ -160,6 +191,11 @@ public class GraphNode {
 			c.dispose();
 		}
 		this.ports = null;
+	}
+	
+	
+	Pane getPane() {
+		return this.nodePane;
 	}
 	
 	/**

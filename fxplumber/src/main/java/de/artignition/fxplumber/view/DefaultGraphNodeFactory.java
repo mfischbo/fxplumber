@@ -27,22 +27,31 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Default implementation for the {@link GraphNodeFactory} interface.
+ * This implementation returns plain unfilled rectangles as the nodes graphical representation.
+ * Connectors are aligned on either side depending on their type. 
+ * The implementation tries to equally distribute the connectors
+ * @author M. Fischboeck
+ *
+ */
 public class DefaultGraphNodeFactory implements GraphNodeFactory {
 
 	@Override
 	public Pane createGraphNode() {
 	
 		Pane retval = new Pane();
-		retval.setPrefSize(100.0d, 100.0d);
+		retval.setPrefSize(80.0d, 80.0d);
 		
 		Rectangle r = new Rectangle();
-		r.setHeight(100.d);
-		r.setWidth(100.d);
+		r.setHeight(80.d);
+		r.setWidth(80.d);
 		r.setX(0);
 		r.setY(0);
 		r.setFill(Color.WHITE);
 		r.setStroke(Color.BLACK);
 		r.setStrokeWidth(1.0d);
+		r.setStroke(Color.rgb(128, 128, 128));
 		retval.getChildren().add(r);
 		return retval;
 	}

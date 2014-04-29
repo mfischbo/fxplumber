@@ -146,11 +146,8 @@ public class Graph {
 		this.canvas.addEventHandler(ConnectorEvent.CONNECTOR_UNHOVERED, new EventHandler<ConnectorEvent>() {
 			@Override
 			public void handle(ConnectorEvent arg0) {
-				if (connRqSource != null) {
-					System.out.println("Calling connection cancelled on source : " + connRqSource);
+				if (connRqSource != null) 
 					connRqSource.onConnectionRequestCancelled();
-				}
-				System.out.println("Calling conn cancelled on target : " + arg0.getConnector());
 				arg0.getConnector().onConnectionRequestCancelled();
 			}
 		});
@@ -171,7 +168,7 @@ public class Graph {
 		this.canvas.setOnMouseMoved(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent arg0) {
 				if (connRqLine != null) {
-					connRqLine.setEnd(new Point2D(arg0.getSceneX()-4, arg0.getSceneY()-4));
+					connRqLine.setEnd(new Point2D(arg0.getX()-4, arg0.getY()-4));
 				}
 			}
 		});

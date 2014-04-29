@@ -17,12 +17,12 @@ package de.artignition.fxplumber.model;
 
 import de.artignition.fxplumber.event.ConnectorEvent;
 import de.artignition.fxplumber.view.ConnectorFactory;
+import de.artignition.fxplumber.view.DefaultConnectorFactory;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 
 /**
  * Represents a port on a {@link GraphNode} where the node is sensitive for establishing {@link Connection}'s to others.
@@ -52,6 +52,21 @@ public class Connector {
 	private ConnectorType	type;
 
 	
+	Connector(GraphNode graphNode, ConnectorType type) {
+		this.graphNode = graphNode;
+		this.type = type;
+		this.factory = new DefaultConnectorFactory();
+		initialize();
+	}
+
+	Connector(GraphNode graphNode, ConnectorType type, ConnectorFactory factory) {
+		this.graphNode = graphNode;
+		this.type = type;
+		this.factory = factory;
+		initialize();
+	}
+	
+	
 	/**
 	 * Creates a new connector on the given graph node.
 	 * @param graphNode The GraphNode on which to create the connector
@@ -59,35 +74,31 @@ public class Connector {
 	 * @param type The type of this node
 	 * @param factory The view factory used to produce the graphical representation of the connector
 	 */
-	Connector(GraphNode graphNode, final Pane parent, ConnectorType type, ConnectorFactory factory) {
-		this.graphNode = graphNode;
-		this.type = type;
-		this.factory = factory;
-	
+	private void initialize() {
 		this.node = factory.newConnector(type);
-		parent.getChildren().add(node);
-		parent.fireEvent(new ConnectorEvent(ConnectorEvent.CONNECTOR_CREATED, this));
+		graphNode.getPane().getChildren().add(node);
+		node.fireEvent(new ConnectorEvent(ConnectorEvent.CONNECTOR_CREATED, this));
 		
 		
 		// attach handler for mouse pressed connection request events
 		final Connector that = this;
 		this.node.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent arg0) {
-				parent.fireEvent(new ConnectorEvent(ConnectorEvent.CONNECTOR_SELECTED, that));
+				node.fireEvent(new ConnectorEvent(ConnectorEvent.CONNECTOR_SELECTED, that));
 			}
 		});
 		
 		this.node.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {
-				parent.fireEvent(new ConnectorEvent(ConnectorEvent.CONNECTOR_HOVERED, that));
+				node.fireEvent(new ConnectorEvent(ConnectorEvent.CONNECTOR_HOVERED, that));
 			}
 		});
 		
 		this.node.setOnMouseExited(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent arg0) {
-				parent.fireEvent(new ConnectorEvent(ConnectorEvent.CONNECTOR_UNHOVERED, that));
+				node.fireEvent(new ConnectorEvent(ConnectorEvent.CONNECTOR_UNHOVERED, that));
 			}
 		});
 	}
