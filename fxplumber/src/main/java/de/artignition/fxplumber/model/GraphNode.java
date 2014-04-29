@@ -18,6 +18,7 @@ package de.artignition.fxplumber.model;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import de.artignition.fxplumber.event.NodeEvent;
 import de.artignition.fxplumber.model.Connector.ConnectorType;
@@ -38,6 +39,9 @@ import javafx.scene.layout.Pane;
  */
 public class GraphNode {
 
+	/* uuid for the hash */
+	private UUID				id;
+	
 	/* The connector ports the graph node contains */
 	private Set<Connector> 		ports;
 	
@@ -57,7 +61,7 @@ public class GraphNode {
 	 * @param factory The factory that is used to create the graphical representation of the node
 	 */
 	GraphNode(Point2D pos, final Pane canvas, GraphNodeFactory factory) {
-
+		this.id = UUID.randomUUID();
 		this.nodePane = factory.createGraphNode();
 		this.nodePane.relocate(pos.getX(), pos.getY());
 		this.factory = factory;
@@ -209,5 +213,32 @@ public class GraphNode {
 	
 		Point2D rel = c.getRelativePosition();
 		return new Point2D(rel.getX() + this.nodePane.getLayoutX(), rel.getY() + nodePane.getLayoutY());
+	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GraphNode other = (GraphNode) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 }
